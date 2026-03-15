@@ -735,7 +735,7 @@ VALUES (
   'Full body first. Same exercises for 6-8 weeks. Earn complexity through consistency. Cook → Measure → Eat. No tracking apps. No fake timelines.',
   ARRAY['BCRPA Registered Personal Trainer', 'Applied Hypertrophy Specialist', 'Certified Nutrition Coach'],
   ARRAY['fat loss', 'body recomposition', 'applied hypertrophy', 'nutrition coaching'],
-  true, true, true, 3,
+  true, true, false, 3,
   '{"instagram": "https://www.instagram.com/eccentriciron"}'::jsonb
 );
 
@@ -763,9 +763,9 @@ VALUES
   ('Coquitlam', 'coquitlam', 49.2838, -122.7932, 'Personal Trainer in Coquitlam, BC | Eccentric Iron Fitness', 'Find a certified personal trainer in Coquitlam. Custom training programs and nutrition coaching.', 170),
   ('Surrey', 'surrey', 49.1913, -122.8490, 'Personal Trainer in Surrey, BC | Eccentric Iron Fitness', 'Find a certified personal trainer in Surrey. Fat loss, muscle building, and online coaching available.', 320);
 
-INSERT INTO coach_service_areas (coach_id, service_area_id, is_primary)
-SELECT (SELECT id FROM coaches WHERE slug = 'carver-lloyd'), id, (slug = 'maple-ridge')
-FROM service_areas WHERE slug IN ('maple-ridge', 'langley', 'coquitlam');
+-- Carver is online-only (province-wide BC). Service areas exist for city page SEO
+-- but are NOT linked to Carver. Future in-person coaches will be linked to areas.
+-- INSERT INTO coach_service_areas when in-person coaches are onboarded.
 ```
 
 ---
