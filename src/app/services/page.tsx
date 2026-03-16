@@ -23,7 +23,7 @@ const services = [
   },
   {
     title: 'ONLINE TRAINING',
-    desc: 'Train with a BCRPA-certified coach from anywhere in British Columbia. Same quality coaching, delivered remotely via video and app.',
+    desc: 'Train with a certified coach from anywhere in British Columbia. Same quality coaching, delivered remotely via video and app.',
     cta: 'EXPLORE MAP →',
     href: '/map',
   },

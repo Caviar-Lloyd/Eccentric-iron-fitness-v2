@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -21,13 +22,16 @@ export function NavBar() {
       className="sticky top-0 z-50 border-b-3 border-border-hard bg-darker-bg"
       aria-label="Main navigation"
     >
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 md:px-6">
-        {/* Wordmark */}
-        <Link
-          href="/"
-          className="font-mono text-lg font-bold uppercase tracking-widest text-text-primary"
-        >
-          ECCENTRIC IRON
+      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-6 md:px-10 lg:px-16">
+        {/* Logo + Wordmark */}
+        <Link href="/" className="flex items-center">
+          <Image
+            src="https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/67266bd09e9f000c92db2bce.png"
+            alt="Eccentric Iron Fitness logo"
+            width={48}
+            height={48}
+            className="h-12 w-12"
+          />
         </Link>
 
         {/* Desktop links */}

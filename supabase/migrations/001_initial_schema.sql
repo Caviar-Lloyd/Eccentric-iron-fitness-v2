@@ -19,6 +19,7 @@ CREATE TABLE coaches (
   photo_url TEXT,
   certifications TEXT[] NOT NULL DEFAULT '{}',
   specialties TEXT[] NOT NULL DEFAULT '{}',
+  gender TEXT CHECK (gender IN ('male', 'female')),
   is_active BOOLEAN NOT NULL DEFAULT true,
   is_online BOOLEAN NOT NULL DEFAULT true,
   is_in_person BOOLEAN NOT NULL DEFAULT false,
@@ -201,14 +202,14 @@ CREATE POLICY "Service role updates blog_posts" ON blog_posts FOR UPDATE USING (
 -- ═══════════════════════════════════════════
 -- SEED DATA
 -- ═══════════════════════════════════════════
-INSERT INTO coaches (slug, first_name, last_name, email, phone, bio, approach, certifications, specialties, is_active, is_online, is_in_person, founding_rate_remaining, social_links)
+INSERT INTO coaches (slug, first_name, last_name, email, phone, bio, approach, certifications, specialties, gender, is_active, is_online, is_in_person, founding_rate_remaining, social_links)
 VALUES (
   'carver-lloyd', 'Carver', 'Lloyd', 'carver@eccentriciron.ca', '(604) 200-3390',
-  'Fat loss and body recomposition specialist in Maple Ridge, BC. BCRPA certified trainer helping real people get real results through consistency, not complexity.',
+  'Fat loss and body recomposition specialist in Maple Ridge, BC. Certified trainer helping real people get real results through consistency, not complexity.',
   'Full body first. Same exercises for 6-8 weeks. Earn complexity through consistency. Cook → Measure → Eat. No tracking apps. No fake timelines.',
-  ARRAY['BCRPA Registered Personal Trainer', 'Applied Hypertrophy Specialist', 'Certified Nutrition Coach'],
+  ARRAY['Applied Hypertrophy Specialist'],
   ARRAY['fat loss', 'body recomposition', 'applied hypertrophy', 'nutrition coaching'],
-  true, true, false, 3,
+  'male', true, true, false, 3,
   '{"instagram": "https://www.instagram.com/eccentriciron"}'::jsonb
 );
 
@@ -216,11 +217,11 @@ INSERT INTO service_tiers (coach_id, name, slug, description, price_cents, price
 VALUES
   ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'),
    'DIY Fat Loss Program', 'diy-fat-loss',
-   'Pre-built training program for self-starters who just need a plan.',
+   'Pre-built training program for self-starters who just need a plan. Unlimited purchase - buy once, keep forever.',
    15000, 'one_time',
    ARRAY['Pre-built full body program (3 days/week)', 'Video exercise library', 'Macro targets via calculator', 'Cook → Measure → Eat framework'],
    ARRAY['Movement assessment', 'Zoom calls', 'Phone/text access', 'Video form reviews', 'Custom program', 'Weekly check-ins'],
-   false, 'Get the Program', '/contact', 1),
+   false, 'COMING SOON', '#', 1),
   ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'),
    'Online Coaching', 'online-coaching',
    'Custom program with weekly 1-on-1 Zoom calls and direct access to your coach.',
@@ -236,6 +237,18 @@ VALUES
   ('Langley', 'langley', 49.1044, -122.6608, 'Personal Trainer in Langley, BC | Eccentric Iron Fitness', 'Find a certified personal trainer in Langley. Evidence-based fat loss and body recomposition coaching.', 210),
   ('Coquitlam', 'coquitlam', 49.2838, -122.7932, 'Personal Trainer in Coquitlam, BC | Eccentric Iron Fitness', 'Find a certified personal trainer in Coquitlam. Custom training programs and nutrition coaching.', 170),
   ('Surrey', 'surrey', 49.1913, -122.8490, 'Personal Trainer in Surrey, BC | Eccentric Iron Fitness', 'Find a certified personal trainer in Surrey. Fat loss, muscle building, and online coaching available.', 320);
+
+-- Testimonials
+INSERT INTO testimonials (coach_id, client_name, quote, is_featured, sort_order, is_active)
+VALUES
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'),
+   'Kent Keyworth',
+   'I have worked with Carver for about 8 months now and couldn''t be happier with the results. If you''re serious about achieving your fitness goals, Carver has the knowledge and tools for you to be successful. He is so supportive and not judgemental at all. I am really impressed by his attention to details regarding proper posture and technique for each exercise and piece of equipment we use. His expertise in fitness and nutrition far exceeds most people''s, and is a big reason for my success with getting the body I want. I couldn''t have done it without him, that''s for sure. Thank you "Body" Carver!',
+   true, 0, true),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'),
+   'Jamie McNulty',
+   'Carver is an Excellent trainer. He''s attentive, encouraging, and always focused on perfecting your technique. Sessions are fun, challenging, and just the right amount of painful for real growth. He tailors everything to your ability and pushes you safely toward progress.',
+   false, 1, true);
 
 -- Carver is online-only (province-wide BC). Service areas exist for city page SEO
 -- but are NOT linked to Carver. Future in-person coaches will be linked to areas.

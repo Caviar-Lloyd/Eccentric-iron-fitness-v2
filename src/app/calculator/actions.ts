@@ -6,13 +6,7 @@ import { supabase } from '@/lib/supabase';
 
 export async function captureCalculatorLead(data: {
   email: string;
-  calculator_data: {
-    tdee: number;
-    protein_g: number;
-    carbs_g: number;
-    fat_g: number;
-    goal: string;
-  };
+  calculator_data: Record<string, unknown>;
 }): Promise<{ success: boolean; error?: string }> {
   // Basic server-side email validation
   if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
@@ -32,7 +26,7 @@ export async function captureCalculatorLead(data: {
   // Fire-and-forget GHL sync
   createOrUpdateGHLContact({
     email: data.email,
-    tags: ['calculator', 'website-lead', data.calculator_data.goal.toLowerCase().replace(/\s+/g, '-')],
+    tags: ['calculator', 'website-lead', String(data.calculator_data.goal ?? '').toLowerCase().replace(/\s+/g, '-')],
   }).then((ghlResult) => {
     if (ghlResult.contactId && result.lead) {
       supabase

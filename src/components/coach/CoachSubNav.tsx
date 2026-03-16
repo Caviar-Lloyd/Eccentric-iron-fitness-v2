@@ -48,7 +48,7 @@ export function CoachSubNav() {
       className="sticky top-16 z-40 border-b-3 border-border-hard bg-darker-bg"
       aria-label="Coach profile sections"
     >
-      <div className="mx-auto flex max-w-[1280px] gap-0 overflow-x-auto px-4 md:px-6">
+      <div className="mx-auto flex max-w-[1600px] gap-0 overflow-x-auto px-6 md:px-10 lg:px-16">
         {sections.map((section) => (
           <button
             key={section.id}

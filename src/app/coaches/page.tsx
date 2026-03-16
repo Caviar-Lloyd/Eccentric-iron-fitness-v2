@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getCoaches } from '@/lib/db/coaches';
 import { supabase } from '@/lib/supabase';
 import { Container } from '@/components/layout/Container';
-import { CoachCard } from '@/components/coach/CoachCard';
+import { CoachDirectoryClient } from '@/components/coach/CoachDirectoryClient';
 
 export const metadata: Metadata = {
   title: 'Our Coaches | Eccentric Iron Fitness',
@@ -46,19 +46,10 @@ export default async function CoachDirectoryPage() {
         OUR COACHES
       </h1>
       <p className="mt-4 text-center font-body text-lg text-text-secondary">
-        BCRPA-certified trainers across British Columbia. Find the right fit for your goals.
+        Certified trainers across British Columbia. Find the right fit for your goals.
       </p>
 
-      <div className="mt-12 grid gap-8 md:grid-cols-2">
-        {coaches.map((coach, index) => (
-          <CoachCard
-            key={coach.id}
-            coach={coach}
-            variant={index === 0 ? 'featured' : 'compact'}
-            startingPrice={startingPrices[coach.id]}
-          />
-        ))}
-      </div>
+      <CoachDirectoryClient coaches={coaches} startingPrices={startingPrices} />
     </Container>
   );
 }

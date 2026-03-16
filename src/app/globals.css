@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
+@theme {
   /* Brand Colors */
   --color-navy: #455590;
   --color-cyan: #2DDBDB;
@@ -11,18 +11,18 @@
   --color-warning: #F7931E;
   --color-error: #EF4444;
 
-  /* Backgrounds */
-  --color-dark-bg: #111827;
-  --color-darker-bg: #0A0E1A;
-  --color-card-surface: #1A2035;
+  /* Backgrounds — light base with dark accent sections */
+  --color-dark-bg: #F5F5F0;
+  --color-darker-bg: #111827;
+  --color-card-surface: #FFFFFF;
 
   /* Borders */
-  --color-border: #2A3050;
+  --color-border: #D4D4D0;
   --color-border-hard: #000000;
 
-  /* Text */
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #9CA3AF;
+  /* Text — dark on light */
+  --color-text-primary: #111827;
+  --color-text-secondary: #4B5563;
   --color-text-muted: #6B7280;
 
   /* Fonts */
@@ -59,4 +59,23 @@ body {
 *::before,
 *::after {
   border-radius: 0 !important;
+}
+
+/*
+ * Dark sections — auto-invert text colors inside bg-darker-bg elements.
+ * This covers navbar, footer, hero sections, CTAs, etc.
+ */
+.bg-darker-bg {
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+  --color-card-surface: #1A2035;
+  --color-border: #2A3050;
+}
+
+/* Navy sections also get light text */
+.bg-navy {
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #94A3B8;
 }

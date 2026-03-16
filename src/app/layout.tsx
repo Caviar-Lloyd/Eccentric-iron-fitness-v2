@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'Eccentric Iron Fitness | Applied Hypertrophy & Evidence-Based Nutrition',
   description:
-    'Find your certified personal trainer in BC. Fat loss, body recomposition, and nutrition coaching from BCRPA-registered trainers.',
+    'Find your certified personal trainer in BC. Fat loss, body recomposition, and evidence-based nutrition coaching.',
 };
 
 export default function RootLayout({

@@ -22,18 +22,26 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer className="border-t-3 border-border-hard bg-darker-bg" role="contentinfo">
-      <div className="mx-auto max-w-[1280px] px-4 py-12 md:px-6">
+      <div className="mx-auto max-w-[1600px] px-6 py-12 md:px-10 lg:px-16">
         <div className="grid gap-10 md:grid-cols-3">
           {/* Column 1: Brand + Contact */}
           <div>
             <p className="font-mono text-lg font-bold uppercase tracking-widest text-text-primary">
               ECCENTRIC IRON
             </p>
-            <p className="mt-3 font-mono text-xs uppercase tracking-widest text-text-muted">
-              Applied Hypertrophy & Evidence-Based Nutrition
-            </p>
             <p className="mt-4 font-body text-sm text-text-secondary">
-              BCRPA-certified personal training across British Columbia.
+              <a href="mailto:carver@eccentriciron.ca" className="transition-colors duration-150 hover:text-cyan">
+                carver@eccentriciron.ca
+              </a>
+            </p>
+            <p className="mt-2 font-body text-sm text-text-secondary">
+              <a href="tel:+16042003390" className="transition-colors duration-150 hover:text-cyan">
+                (604) 200-3390
+              </a>
+            </p>
+            <p className="mt-2 font-body text-sm text-text-muted">
+              #2418-11280 Pazarena Place<br />
+              Maple Ridge, BC V2X 9H8
             </p>
           </div>
 

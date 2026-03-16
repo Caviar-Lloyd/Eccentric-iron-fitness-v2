@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getCoaches } from '@/lib/db/coaches';
 import { Container } from '@/components/layout/Container';
 import { SectionDivider } from '@/components/ui/SectionDivider';
@@ -8,7 +9,7 @@ export function generateMetadata() {
   return {
     title: 'Eccentric Iron Fitness | Applied Hypertrophy & Evidence-Based Nutrition',
     description:
-      'Find your certified personal trainer in BC. Fat loss, body recomposition, and nutrition coaching from BCRPA-registered trainers. Calculate your macros free.',
+      'Find your certified personal trainer in BC. Fat loss, body recomposition, and nutrition coaching. Calculate your macros free.',
   };
 }
 
@@ -24,20 +25,31 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="flex min-h-[70vh] flex-col items-center justify-center px-4 py-24 text-center">
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-cyan">
-          BCRPA-Certified Personal Training
+      <section className="relative flex min-h-[70vh] flex-col items-center justify-center px-4 py-24 text-center">
+        {/* Background image */}
+        <Image
+          src="https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/02b8549b-a390-4492-8116-b5eb257e2cb0.png"
+          alt="Brutalist gym interior with iron plates and cyan accent lighting"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
+        <p className="relative z-10 font-mono text-xs uppercase tracking-[0.3em] text-cyan">
+          Certified Personal Training
         </p>
-        <h1 className="mt-4 font-heading text-5xl font-extrabold uppercase leading-none tracking-tight text-text-primary md:text-7xl lg:text-8xl">
-          FIND YOUR
+        <h1 className="relative z-10 mt-4 font-heading text-5xl font-extrabold uppercase leading-none tracking-tight text-white md:text-7xl lg:text-8xl">
+          DEFINE YOUR
           <br />
           <span className="text-cyan">STRENGTH</span>
         </h1>
-        <p className="mt-6 max-w-xl font-body text-lg text-text-secondary">
-          Applied hypertrophy and evidence-based nutrition coaching across British Columbia.
-          Multi-coach platform — find the right fit for your goals.
+        <p className="relative z-10 mt-6 max-w-2xl font-body text-lg text-white/80">
+          Personal trainers for fat loss, body recomposition, and evidence-based nutrition coaching.
+          Online and in-person across British Columbia — calculate your macros, find your coach, start training.
         </p>
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+        <div className="relative z-10 mt-10 flex flex-col gap-4 sm:flex-row">
           <Link
             href="/map"
             className="inline-flex min-h-[48px] items-center justify-center border-3 border-border-hard bg-cyan px-8 font-mono text-sm font-medium uppercase tracking-widest text-darker-bg shadow-[4px_4px_0px_#000] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:translate-y-0 active:shadow-none"

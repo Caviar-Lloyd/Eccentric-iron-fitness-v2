@@ -2,84 +2,12 @@
 
 import { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, Marker, InfoWindow } from '@vis.gl/react-google-maps';
 import type { ServiceArea } from '@/lib/types';
 
-/** Dark brutalist map styling */
-const DARK_MAP_STYLES: google.maps.MapTypeStyle[] = [
-  { elementType: 'geometry', stylers: [{ color: '#0A0E1A' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#0A0E1A' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#6B7280' }] },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#2A3050' }],
-  },
-  {
-    featureType: 'administrative.land_parcel',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#6B7280' }],
-  },
-  {
-    featureType: 'landscape',
-    elementType: 'geometry',
-    stylers: [{ color: '#111827' }],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'geometry',
-    stylers: [{ color: '#1A2035' }],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#6B7280' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{ color: '#2A3050' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#1A2035' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#6B7280' }],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry',
-    stylers: [{ color: '#455590' }],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#2A3050' }],
-  },
-  {
-    featureType: 'transit',
-    elementType: 'geometry',
-    stylers: [{ color: '#1A2035' }],
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{ color: '#0A0E1A' }],
-  },
-  {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#455590' }],
-  },
-];
-
-/** BC center coordinates */
-const BC_CENTER = { lat: 53.7, lng: -127.6 };
-const BC_ZOOM = 5;
+/** BC center — zoomed to show the Lower Mainland / Fraser Valley */
+const BC_CENTER = { lat: 49.25, lng: -122.8 };
+const BC_ZOOM = 9;
 
 export type MapViewProps = {
   areas: ServiceArea[];
@@ -120,34 +48,17 @@ export function MapView({
             streetViewControl={false}
             fullscreenControl={false}
             zoomControl={true}
-            styles={DARK_MAP_STYLES}
-            mapId="eccentric-iron-bc-map"
           >
-            {areas.map((area) => {
-              const isSelected = selectedAreaId === area.id;
-
-              return (
-                <AdvancedMarker
-                  key={area.id}
-                  position={{ lat: area.lat, lng: area.lng }}
-                  onClick={() => handleMarkerClick(area)}
-                  title={area.name}
-                >
-                  <div
-                    className="relative cursor-pointer"
-                    onMouseEnter={() => setHoveredAreaId(area.id)}
-                    onMouseLeave={() => setHoveredAreaId(null)}
-                  >
-                    <Pin
-                      background={isSelected ? '#FF6B35' : '#2DDBDB'}
-                      glyphColor={isSelected ? '#FFFFFF' : '#0A0E1A'}
-                      borderColor="#000000"
-                      scale={isSelected ? 1.3 : 1}
-                    />
-                  </div>
-                </AdvancedMarker>
-              );
-            })}
+            {areas.map((area) => (
+              <Marker
+                key={area.id}
+                position={{ lat: area.lat, lng: area.lng }}
+                onClick={() => handleMarkerClick(area)}
+                title={area.name}
+                onMouseOver={() => setHoveredAreaId(area.id)}
+                onMouseOut={() => setHoveredAreaId(null)}
+              />
+            ))}
 
             {/* Tooltip for hovered area */}
             {hoveredAreaId && (() => {

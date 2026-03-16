@@ -11,9 +11,7 @@ export const siteConfig = {
     country: 'Canada',
   },
   certifications: [
-    'BCRPA Registered Personal Trainer',
     'Applied Hypertrophy Specialist',
-    'Certified Nutrition Coach',
   ],
   social: {
     instagram: 'https://www.instagram.com/eccentriciron',

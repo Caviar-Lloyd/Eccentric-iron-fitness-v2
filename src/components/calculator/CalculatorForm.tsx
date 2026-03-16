@@ -34,6 +34,8 @@ export function CalculatorForm({ onSubmit }: CalculatorFormProps) {
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [heightFt, setHeightFt] = useState('');
+  const [heightIn, setHeightIn] = useState('');
   const [activityLevel, setActivityLevel] = useState<ActivityLevel>('Moderately Active');
   const [goal, setGoal] = useState<Goal>('Fat Loss');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -42,10 +44,14 @@ export function CalculatorForm({ onSubmit }: CalculatorFormProps) {
     (e: React.FormEvent) => {
       e.preventDefault();
 
+      const heightValue = units === 'Imperial'
+        ? Number(heightFt) * 12 + Number(heightIn || 0)
+        : Number(height);
+
       const input: CalculatorInput = {
         age: Number(age),
         weight: Number(weight),
-        height: Number(height),
+        height: heightValue,
         gender,
         units,
         activityLevel,
@@ -70,7 +76,7 @@ export function CalculatorForm({ onSubmit }: CalculatorFormProps) {
       const macros = calculateMacros(input);
       onSubmit(macros, input);
     },
-    [age, weight, height, gender, units, activityLevel, goal, onSubmit]
+    [age, weight, height, heightFt, heightIn, gender, units, activityLevel, goal, onSubmit]
   );
 
   return (
@@ -114,16 +120,55 @@ export function CalculatorForm({ onSubmit }: CalculatorFormProps) {
           min={1}
           inputMode="decimal"
         />
-        <FormField
-          label={units === 'Imperial' ? 'Height (inches)' : 'Height (cm)'}
-          type="number"
-          placeholder={units === 'Imperial' ? 'e.g. 70' : 'e.g. 178'}
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
-          error={errors.height}
-          min={1}
-          inputMode="decimal"
-        />
+        {units === 'Imperial' ? (
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-xs font-medium uppercase tracking-widest text-text-secondary">
+              Height
+            </span>
+            <div className="flex gap-3">
+              <div className="flex flex-1 items-end gap-2">
+                <input
+                  type="number"
+                  placeholder="5"
+                  value={heightFt}
+                  onChange={(e) => setHeightFt(e.target.value)}
+                  min={1}
+                  max={8}
+                  inputMode="numeric"
+                  className={`w-full border-b-3 bg-transparent px-0 py-3 font-body text-base text-text-primary outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-cyan ${errors.height ? 'border-error' : 'border-border'}`}
+                />
+                <span className="shrink-0 pb-3 font-mono text-xs uppercase text-text-muted">ft</span>
+              </div>
+              <div className="flex flex-1 items-end gap-2">
+                <input
+                  type="number"
+                  placeholder="10"
+                  value={heightIn}
+                  onChange={(e) => setHeightIn(e.target.value)}
+                  min={0}
+                  max={11}
+                  inputMode="numeric"
+                  className="w-full border-b-3 border-border bg-transparent px-0 py-3 font-body text-base text-text-primary outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-cyan"
+                />
+                <span className="shrink-0 pb-3 font-mono text-xs uppercase text-text-muted">in</span>
+              </div>
+            </div>
+            {errors.height && (
+              <p className="font-mono text-xs text-error" role="alert">{errors.height}</p>
+            )}
+          </div>
+        ) : (
+          <FormField
+            label="Height (cm)"
+            type="number"
+            placeholder="e.g. 178"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            error={errors.height}
+            min={1}
+            inputMode="decimal"
+          />
+        )}
       </div>
 
       {/* Activity Level & Goal */}
@@ -156,7 +201,7 @@ export function CalculatorForm({ onSubmit }: CalculatorFormProps) {
       </div>
 
       {/* Submit */}
-      <BrutalistButton type="submit" className="w-full">
+      <BrutalistButton type="submit" className="sm:w-auto">
         CALCULATE
       </BrutalistButton>
     </form>

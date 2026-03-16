@@ -91,16 +91,22 @@ export function PricingTier({
 
         {/* CTA */}
         <div className="mt-auto pt-6">
-          <a
-            href={tier.cta_url}
-            className={`flex min-h-[48px] w-full items-center justify-center border-3 border-border-hard font-mono text-sm font-medium uppercase tracking-widest shadow-[4px_4px_0px_#000] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:translate-y-0 active:shadow-none ${
-              isHighlighted
-                ? 'bg-cyan text-darker-bg'
-                : 'bg-transparent text-text-primary'
-            }`}
-          >
-            {tier.cta_label}
-          </a>
+          {tier.cta_label === 'COMING SOON' ? (
+            <div className="flex min-h-[48px] w-full items-center justify-center border-3 border-border bg-card-surface font-mono text-sm font-medium uppercase tracking-widest text-text-muted">
+              COMING SOON
+            </div>
+          ) : (
+            <a
+              href={tier.cta_url}
+              className={`flex min-h-[48px] w-full items-center justify-center border-3 border-border-hard font-mono text-sm font-medium uppercase tracking-widest shadow-[4px_4px_0px_#000] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:translate-y-0 active:shadow-none ${
+                isHighlighted
+                  ? 'bg-cyan text-darker-bg'
+                  : 'bg-transparent text-text-primary'
+              }`}
+            >
+              {tier.cta_label}
+            </a>
+          )}
         </div>
       </div>
     </div>

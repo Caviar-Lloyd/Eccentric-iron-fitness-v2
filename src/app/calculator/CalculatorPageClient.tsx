@@ -6,17 +6,19 @@ import { CalculatorResults } from '@/components/calculator/CalculatorResults';
 import { EmailCapture } from '@/components/ui/EmailCapture';
 import { SectionDivider } from '@/components/ui/SectionDivider';
 import { captureCalculatorLead } from './actions';
-import type { MacroResult } from '@/lib/calculator';
+import type { MacroResult, CalculatorInput } from '@/lib/calculator';
 
 type FlowState = 'form' | 'email-gate' | 'results';
 
 export function CalculatorPageClient() {
   const [flowState, setFlowState] = useState<FlowState>('form');
   const [results, setResults] = useState<MacroResult | null>(null);
+  const [inputData, setInputData] = useState<CalculatorInput | null>(null);
 
   const handleFormSubmit = useCallback(
-    (macros: MacroResult) => {
+    (macros: MacroResult, input: CalculatorInput) => {
       setResults(macros);
+      setInputData(input);
       setFlowState('email-gate');
     },
     []
@@ -28,6 +30,9 @@ export function CalculatorPageClient() {
         return { success: false, error: 'No calculator data available' };
       }
 
+      const heightFt = inputData?.units === 'Imperial' ? Math.floor(inputData.height / 12) : undefined;
+      const heightIn = inputData?.units === 'Imperial' ? inputData.height % 12 : undefined;
+
       const response = await captureCalculatorLead({
         email,
         calculator_data: {
@@ -36,6 +41,14 @@ export function CalculatorPageClient() {
           carbs_g: results.carbs_g,
           fat_g: results.fat_g,
           goal: results.goal,
+          age: inputData?.age,
+          weight: inputData?.weight,
+          weight_unit: inputData?.units === 'Imperial' ? 'lbs' : 'kg',
+          height_ft: heightFt,
+          height_in: heightIn,
+          height_cm: inputData?.units === 'Metric' ? inputData.height : undefined,
+          gender: inputData?.gender,
+          activity_level: inputData?.activityLevel,
         },
       });
 
@@ -45,7 +58,7 @@ export function CalculatorPageClient() {
 
       return response;
     },
-    [results]
+    [results, inputData]
   );
 
   return (

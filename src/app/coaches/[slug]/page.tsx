@@ -8,6 +8,7 @@ import { Tag } from '@/components/ui/Tag';
 import { PricingTier } from '@/components/coach/PricingTier';
 import { TestimonialCard } from '@/components/coach/TestimonialCard';
 import { CoachSubNav } from '@/components/coach/CoachSubNav';
+import { BookingDrawer } from '@/components/coach/BookingDrawer';
 import Link from 'next/link';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -53,9 +54,19 @@ export default async function CoachProfilePage({ params }: Props) {
       {/* Hero */}
       <section className="bg-darker-bg py-16">
         <Container className="flex flex-col items-center gap-8 md:flex-row md:items-start">
-          {/* Photo or placeholder */}
-          <div className="flex h-64 w-64 shrink-0 items-center justify-center border-3 border-border-hard bg-navy shadow-[4px_4px_0px_#000] md:h-80 md:w-80">
-            {coach.photo_url ? (
+          {/* Photo / Video or placeholder */}
+          <div className="h-64 w-64 shrink-0 overflow-hidden border-3 border-border-hard bg-navy shadow-[4px_4px_0px_#000] md:h-80 md:w-80">
+            {coach.photo_url?.endsWith('.mp4') ? (
+              <video
+                src={coach.photo_url}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover"
+                aria-label={`Video of ${coach.first_name} ${coach.last_name}`}
+              />
+            ) : coach.photo_url ? (
               <Image
                 src={coach.photo_url}
                 alt={`Photo of ${coach.first_name} ${coach.last_name}`}
@@ -64,9 +75,11 @@ export default async function CoachProfilePage({ params }: Props) {
                 className="h-full w-full object-cover"
               />
             ) : (
-              <span className="font-mono text-6xl font-bold text-white">
-                {coach.first_name[0]}{coach.last_name[0]}
-              </span>
+              <div className="flex h-full w-full items-center justify-center">
+                <span className="font-mono text-6xl font-bold text-white">
+                  {coach.first_name[0]}{coach.last_name[0]}
+                </span>
+              </div>
             )}
           </div>
 
@@ -204,12 +217,10 @@ export default async function CoachProfilePage({ params }: Props) {
             Book a free discovery call with {coach.first_name} to discuss your goals and find the right plan.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/contact"
-              className="inline-flex min-h-[48px] items-center justify-center border-3 border-border-hard bg-cyan px-8 font-mono text-sm font-medium uppercase tracking-widest text-darker-bg shadow-[4px_4px_0px_#000] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:translate-y-0 active:shadow-none"
-            >
-              BOOK DISCOVERY CALL <span className="ml-2" aria-hidden="true">→</span>
-            </Link>
+            <BookingDrawer
+              coachId={coach.id}
+              coachName={`${coach.first_name} ${coach.last_name}`}
+            />
           </div>
         </Container>
       </section>

@@ -11,6 +11,7 @@ export interface Coach {
   photo_url: string | null;
   certifications: string[];
   specialties: string[];
+  gender: 'male' | 'female' | null;
   is_active: boolean;
   is_online: boolean;
   is_in_person: boolean;
@@ -100,13 +101,7 @@ export interface Lead {
   id: string;
   email: string;
   source: 'calculator' | 'contact_form' | 'newsletter' | 'waitlist';
-  calculator_data: {
-    tdee: number;
-    protein_g: number;
-    carbs_g: number;
-    fat_g: number;
-    goal: string;
-  } | null;
+  calculator_data: Record<string, unknown> | null;
   ghl_contact_id: string | null;
   coach_id: string | null;
   created_at: string;

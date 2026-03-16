@@ -23,7 +23,7 @@ export default function CalculatorPage() {
         <p className="mt-4 font-body text-base leading-relaxed text-text-secondary md:text-lg">
           Get your personalized calorie and macro targets using the Mifflin-St
           Jeor equation. Whether you are cutting, maintaining, or building, these
-          numbers give you a science-backed starting point.
+          numbers give you an evidence-based starting point.
         </p>
       </div>
 
