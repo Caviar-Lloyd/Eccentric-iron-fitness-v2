@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Brand Colors */
+  --color-navy: #455590;
+  --color-cyan: #2DDBDB;
+  --color-orange: #FF6B35;
+
+  /* Semantic Colors */
+  --color-success: #22C55E;
+  --color-warning: #F7931E;
+  --color-error: #EF4444;
+
+  /* Backgrounds */
+  --color-dark-bg: #111827;
+  --color-darker-bg: #0A0E1A;
+  --color-card-surface: #1A2035;
+
+  /* Borders */
+  --color-border: #2A3050;
+  --color-border-hard: #000000;
+
+  /* Text */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+
+  /* Fonts */
+  --font-heading: var(--font-space-grotesk), "Arial Black", sans-serif;
+  --font-body: var(--font-inter), "Helvetica Neue", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "Courier New", monospace;
+
+  /* Border Radius — brutalist: zero everywhere */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+  --radius-full: 0px;
+
+  /* Brutalist Shadow */
+  --shadow-brutalist: 4px 4px 0px #000;
+  --shadow-brutalist-sm: 2px 2px 0px #000;
+  --shadow-brutalist-hover: 6px 6px 0px #000;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-dark-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+/* Enforce zero border-radius globally */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
 }
