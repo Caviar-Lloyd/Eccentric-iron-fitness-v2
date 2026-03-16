@@ -29,9 +29,7 @@ export function TestimonialCard({
     return (
       <div className={`border-l-3 border-cyan bg-card-surface p-4 ${className}`}>
         <p className="font-body text-sm italic text-text-secondary">
-          &ldquo;{testimonial.quote.length > 120
-            ? `${testimonial.quote.slice(0, 120)}...`
-            : testimonial.quote}&rdquo;
+          &ldquo;{testimonial.quote}&rdquo;
         </p>
         <p className="mt-2 font-mono text-xs uppercase tracking-widest text-text-muted">
           — {testimonial.client_name}

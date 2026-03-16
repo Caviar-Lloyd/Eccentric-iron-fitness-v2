@@ -32,11 +32,11 @@ export default async function Home() {
           alt="Brutalist gym interior with iron plates and cyan accent lighting"
           fill
           priority
-          className="object-cover"
+          className="z-0 object-cover"
           sizes="100vw"
         />
         {/* Overlay for text readability */}
-        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
+        <div className="absolute inset-0 z-[1] bg-black/65" />
         <p className="relative z-10 font-mono text-xs uppercase tracking-[0.3em] text-cyan">
           Certified Personal Training
         </p>
@@ -101,17 +101,18 @@ export default async function Home() {
                 className="group border-3 border-border-hard bg-card-surface shadow-[4px_4px_0px_#000] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000]"
               >
                 {/* Photo */}
-                <div className="relative h-48 overflow-hidden bg-navy">
+                <div className="overflow-hidden bg-navy">
                   {coach.photo_url ? (
                     <Image
                       src={coach.photo_url}
                       alt={`${coach.first_name} ${coach.last_name}`}
-                      fill
-                      className="object-cover"
+                      width={600}
+                      height={400}
+                      className="w-full"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center">
+                    <div className="flex h-48 w-full items-center justify-center">
                       <span className="font-mono text-4xl font-bold text-white">
                         {coach.first_name[0]}{coach.last_name[0]}
                       </span>

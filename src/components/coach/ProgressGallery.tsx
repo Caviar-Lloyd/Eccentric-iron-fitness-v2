@@ -63,7 +63,7 @@ export function ProgressGallery({ photos }: ProgressGalleryProps) {
       </div>
 
       {/* Side-by-side comparison */}
-      <div className="mt-6 grid grid-cols-2 gap-4 md:gap-6">
+      <div className="mx-auto mt-6 grid max-w-2xl grid-cols-2 gap-4 md:gap-6">
         {dates.map((date) => {
           const photo = getPhoto(date, activePose);
           if (!photo) return null;
@@ -76,7 +76,7 @@ export function ProgressGallery({ photos }: ProgressGalleryProps) {
                   alt={`${POSE_LABELS[activePose]} view — ${formatDate(date)}`}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 50vw, 40vw"
+                  sizes="(max-width: 768px) 45vw, 280px"
                 />
               </div>
               <p className="mt-2 text-center font-mono text-xs font-medium uppercase tracking-widest text-text-secondary">

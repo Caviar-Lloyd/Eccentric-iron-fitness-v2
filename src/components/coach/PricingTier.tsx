@@ -40,8 +40,8 @@ export function PricingTier({
       {isHighlighted && <div className="h-1.5 bg-cyan" />}
 
       <div className="flex flex-1 flex-col p-6">
-        {/* Scarcity badge */}
-        {foundingRateRemaining != null && foundingRateRemaining > 0 && (
+        {/* Scarcity badge — only on featured tier */}
+        {isHighlighted && foundingRateRemaining != null && foundingRateRemaining > 0 && (
           <div className="mb-4 inline-block self-start bg-orange px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest text-white">
             ONLY {foundingRateRemaining} FOUNDING SPOTS LEFT
           </div>

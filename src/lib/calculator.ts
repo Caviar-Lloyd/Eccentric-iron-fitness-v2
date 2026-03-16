@@ -114,30 +114,35 @@ export function calculateTDEE(input: CalculatorInput): number {
   return Math.round(tdee);
 }
 
+/* ── Goal-specific macro splits (percentage of calories) ── */
+
+const MACRO_SPLITS: Record<Goal, { protein: number; carbs: number; fat: number }> = {
+  'Fat Loss': { protein: 0.4, carbs: 0.35, fat: 0.25 },
+  'Maintenance': { protein: 0.3, carbs: 0.4, fat: 0.3 },
+  'Lean Bulk': { protein: 0.3, carbs: 0.45, fat: 0.25 },
+};
+
 /**
- * Calculate macros based on TDEE, goal, and bodyweight.
- * Protein: 1g per lb bodyweight
- * Fat: 25% of total adjusted calories
- * Carbs: remainder
+ * Calculate macros based on TDEE, goal, and percentage splits.
+ * Fat Loss:    40% protein / 35% carbs / 25% fat
+ * Maintenance: 30% protein / 40% carbs / 30% fat
+ * Lean Bulk:   30% protein / 45% carbs / 25% fat
  */
 export function calculateMacros(input: CalculatorInput): MacroResult {
   const tdee = calculateTDEE(input);
   const goalMultiplier = GOAL_MULTIPLIERS[input.goal];
   const adjustedCalories = Math.round(tdee * goalMultiplier);
 
-  // Protein: 1g per lb bodyweight
-  const weightLbs =
-    input.units === 'Imperial' ? input.weight : kgToLbs(input.weight);
-  const protein_g = Math.round(weightLbs);
+  const split = MACRO_SPLITS[input.goal];
 
-  // Fat: 25% of adjusted calories (9 cal/g)
-  const fatCalories = adjustedCalories * 0.25;
-  const fat_g = Math.round(fatCalories / 9);
+  // Protein (4 cal/g)
+  const protein_g = Math.round((adjustedCalories * split.protein) / 4);
 
-  // Carbs: remainder (4 cal/g)
-  const proteinCalories = protein_g * 4;
-  const carbCalories = adjustedCalories - proteinCalories - fatCalories;
-  const carbs_g = Math.max(0, Math.round(carbCalories / 4));
+  // Carbs (4 cal/g)
+  const carbs_g = Math.round((adjustedCalories * split.carbs) / 4);
+
+  // Fat (9 cal/g)
+  const fat_g = Math.round((adjustedCalories * split.fat) / 9);
 
   return {
     tdee,

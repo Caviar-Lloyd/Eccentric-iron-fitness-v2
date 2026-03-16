@@ -56,7 +56,7 @@ export default async function CoachProfilePage({ params }: Props) {
       <section className="bg-darker-bg py-16">
         <Container className="flex flex-col items-center gap-8 md:flex-row md:items-start">
           {/* Photo / Video or placeholder */}
-          <div className="h-64 w-64 shrink-0 overflow-hidden border-3 border-border-hard bg-navy shadow-[4px_4px_0px_#000] md:h-80 md:w-80">
+          <div className="shrink-0 overflow-hidden border-3 border-border-hard bg-navy shadow-[4px_4px_0px_#000]">
             {coach.photo_url?.endsWith('.mp4') ? (
               <video
                 src={coach.photo_url}
@@ -64,7 +64,7 @@ export default async function CoachProfilePage({ params }: Props) {
                 loop
                 muted
                 playsInline
-                className="h-full w-full object-cover"
+                className="w-64 md:w-80"
                 aria-label={`Video of ${coach.first_name} ${coach.last_name}`}
               />
             ) : coach.photo_url ? (
@@ -72,11 +72,11 @@ export default async function CoachProfilePage({ params }: Props) {
                 src={coach.photo_url}
                 alt={`Photo of ${coach.first_name} ${coach.last_name}`}
                 width={320}
-                height={320}
-                className="h-full w-full object-cover"
+                height={480}
+                className="w-64 md:w-80"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center">
+              <div className="flex h-64 w-64 items-center justify-center md:h-80 md:w-80">
                 <span className="font-mono text-6xl font-bold text-white">
                   {coach.first_name[0]}{coach.last_name[0]}
                 </span>
