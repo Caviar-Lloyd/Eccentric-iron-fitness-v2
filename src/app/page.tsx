@@ -100,11 +100,23 @@ export default async function Home() {
                 href={`/coaches/${coach.slug}`}
                 className="group border-3 border-border-hard bg-card-surface shadow-[4px_4px_0px_#000] transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000]"
               >
-                {/* Photo placeholder */}
-                <div className="flex h-48 items-center justify-center bg-navy">
-                  <span className="font-mono text-4xl font-bold text-white">
-                    {coach.first_name[0]}{coach.last_name[0]}
-                  </span>
+                {/* Photo */}
+                <div className="relative h-48 overflow-hidden bg-navy">
+                  {coach.photo_url ? (
+                    <Image
+                      src={coach.photo_url}
+                      alt={`${coach.first_name} ${coach.last_name}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <span className="font-mono text-4xl font-bold text-white">
+                        {coach.first_name[0]}{coach.last_name[0]}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-5">
                   <h3 className="font-heading text-lg font-bold uppercase tracking-widest text-text-primary">

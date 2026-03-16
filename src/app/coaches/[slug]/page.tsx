@@ -9,6 +9,7 @@ import { PricingTier } from '@/components/coach/PricingTier';
 import { TestimonialCard } from '@/components/coach/TestimonialCard';
 import { CoachSubNav } from '@/components/coach/CoachSubNav';
 import { BookingDrawer } from '@/components/coach/BookingDrawer';
+import { ProgressGallery } from '@/components/coach/ProgressGallery';
 import Link from 'next/link';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -110,6 +111,22 @@ export default async function CoachProfilePage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      {/* Progress Photos */}
+      {coach.progress_photos.length > 0 && (
+        <>
+          <SectionDivider variant="heavy" />
+          <Container as="section" className="py-12" id="progress">
+            <h2 className="font-heading text-2xl font-bold uppercase tracking-widest text-text-primary md:text-3xl">
+              PERSONAL PROGRESS
+            </h2>
+            <div className="mt-2 h-[3px] w-24 bg-cyan" />
+            <div className="mt-8">
+              <ProgressGallery photos={coach.progress_photos} />
+            </div>
+          </Container>
+        </>
+      )}
 
       <SectionDivider variant="heavy" />
 

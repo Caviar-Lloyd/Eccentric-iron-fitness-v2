@@ -147,6 +147,22 @@ CREATE INDEX idx_leads_email ON leads(email);
 CREATE INDEX idx_leads_source ON leads(source);
 
 -- ═══════════════════════════════════════════
+-- COACH PROGRESS PHOTOS
+-- ═══════════════════════════════════════════
+CREATE TABLE coach_progress_photos (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  coach_id UUID NOT NULL REFERENCES coaches(id) ON DELETE CASCADE,
+  photo_date DATE NOT NULL,
+  pose TEXT NOT NULL CHECK (pose IN ('front', 'back', 'lateral_left', 'lateral_right')),
+  image_url TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_progress_photos_coach ON coach_progress_photos(coach_id);
+
+-- ═══════════════════════════════════════════
 -- AUTO-UPDATE TIMESTAMPS
 -- ═══════════════════════════════════════════
 CREATE OR REPLACE FUNCTION update_updated_at()
@@ -174,6 +190,7 @@ ALTER TABLE service_areas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE coach_service_areas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE coach_progress_photos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
 
 -- Public read for content tables
@@ -183,6 +200,7 @@ CREATE POLICY "Public read service_areas" ON service_areas FOR SELECT USING (is_
 CREATE POLICY "Public read coach_service_areas" ON coach_service_areas FOR SELECT USING (true);
 CREATE POLICY "Public read testimonials" ON testimonials FOR SELECT USING (is_active = true);
 CREATE POLICY "Public read blog_posts" ON blog_posts FOR SELECT USING (is_published = true);
+CREATE POLICY "Public read progress_photos" ON coach_progress_photos FOR SELECT USING (is_active = true);
 
 -- Leads: service_role only
 CREATE POLICY "Service role manages leads" ON leads FOR ALL USING (auth.role() = 'service_role');
@@ -198,15 +216,18 @@ CREATE POLICY "Service role writes testimonials" ON testimonials FOR INSERT WITH
 CREATE POLICY "Service role updates testimonials" ON testimonials FOR UPDATE USING (auth.role() = 'service_role');
 CREATE POLICY "Service role writes blog_posts" ON blog_posts FOR INSERT WITH CHECK (auth.role() = 'service_role');
 CREATE POLICY "Service role updates blog_posts" ON blog_posts FOR UPDATE USING (auth.role() = 'service_role');
+CREATE POLICY "Service role writes progress_photos" ON coach_progress_photos FOR INSERT WITH CHECK (auth.role() = 'service_role');
+CREATE POLICY "Service role updates progress_photos" ON coach_progress_photos FOR UPDATE USING (auth.role() = 'service_role');
 
 -- ═══════════════════════════════════════════
 -- SEED DATA
 -- ═══════════════════════════════════════════
-INSERT INTO coaches (slug, first_name, last_name, email, phone, bio, approach, certifications, specialties, gender, is_active, is_online, is_in_person, founding_rate_remaining, social_links)
+INSERT INTO coaches (slug, first_name, last_name, email, phone, bio, approach, photo_url, certifications, specialties, gender, is_active, is_online, is_in_person, founding_rate_remaining, social_links)
 VALUES (
   'carver-lloyd', 'Carver', 'Lloyd', 'carver@eccentriciron.ca', '(604) 200-3390',
   'Fat loss and body recomposition specialist in Maple Ridge, BC. Certified trainer helping real people get real results through consistency, not complexity.',
   'Full body first. Same exercises for 6-8 weeks. Earn complexity through consistency. Cook → Measure → Eat. No tracking apps. No fake timelines.',
+  'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/693365d081eaa1683fc2df20.png',
   ARRAY['Applied Hypertrophy Specialist'],
   ARRAY['fat loss', 'body recomposition', 'applied hypertrophy', 'nutrition coaching'],
   'male', true, true, false, 3,
@@ -249,6 +270,18 @@ VALUES
    'Jamie McNulty',
    'Carver is an Excellent trainer. He''s attentive, encouraging, and always focused on perfecting your technique. Sessions are fun, challenging, and just the right amount of painful for real growth. He tailors everything to your ability and pushes you safely toward progress.',
    false, 1, true);
+
+-- Coach progress photos
+INSERT INTO coach_progress_photos (coach_id, photo_date, pose, image_url, sort_order)
+VALUES
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-01-01', 'front', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c187f0f2a0f3228e9f.jpg', 0),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-01-01', 'back', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c1eb27ef329f40d725.jpg', 1),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-01-01', 'lateral_left', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c1ad027689dc0e7ebf.jpg', 2),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-01-01', 'lateral_right', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c1ad0276f7ae0e7ec0.jpg', 3),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-02-01', 'front', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c19379cfb362a1b000.jpg', 0),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-02-01', 'back', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c1d3192d4114fdfa41.jpg', 1),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-02-01', 'lateral_left', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c19379cf3726a1afff.jpg', 2),
+  ((SELECT id FROM coaches WHERE slug = 'carver-lloyd'), '2026-02-01', 'lateral_right', 'https://assets.cdn.filesafe.space/z3m4mhravHce78P6jW12/media/69b767c1d3192d680ffdfa40.jpg', 3);
 
 -- Carver is online-only (province-wide BC). Service areas exist for city page SEO
 -- but are NOT linked to Carver. Future in-person coaches will be linked to areas.

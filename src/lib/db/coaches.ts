@@ -47,7 +47,7 @@ export async function getCoachWithRelations(
     return null;
   }
 
-  const [tiersResult, testimonialsResult, areasResult] = await Promise.all([
+  const [tiersResult, testimonialsResult, areasResult, progressResult] = await Promise.all([
     supabase
       .from('service_tiers')
       .select('*')
@@ -73,6 +73,13 @@ export async function getCoachWithRelations(
           .in('id', ids)
           .eq('is_active', true);
       }),
+    supabase
+      .from('coach_progress_photos')
+      .select('*')
+      .eq('coach_id', coach.id)
+      .eq('is_active', true)
+      .order('photo_date', { ascending: true })
+      .order('sort_order', { ascending: true }),
   ]);
 
   return {
@@ -80,5 +87,6 @@ export async function getCoachWithRelations(
     service_tiers: (tiersResult.data ?? []) as CoachWithRelations['service_tiers'],
     testimonials: (testimonialsResult.data ?? []) as CoachWithRelations['testimonials'],
     service_areas: (areasResult.data ?? []) as CoachWithRelations['service_areas'],
+    progress_photos: (progressResult.data ?? []) as CoachWithRelations['progress_photos'],
   };
 }

@@ -77,6 +77,18 @@ export interface Testimonial {
   created_at: string;
 }
 
+/** Coach progress photo for before/after comparisons */
+export interface ProgressPhoto {
+  id: string;
+  coach_id: string;
+  photo_date: string;
+  pose: 'front' | 'back' | 'lateral_left' | 'lateral_right';
+  image_url: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+}
+
 /** Blog post authored by a coach */
 export interface BlogPost {
   id: string;
@@ -113,6 +125,7 @@ export interface CoachWithRelations extends Coach {
   service_tiers: ServiceTier[];
   testimonials: Testimonial[];
   service_areas: ServiceArea[];
+  progress_photos: ProgressPhoto[];
 }
 
 export interface ServiceAreaWithCoaches extends ServiceArea {
