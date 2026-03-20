@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { BrutalistButton } from '@/components/ui/BrutalistButton';
 
 type EmailCaptureVariant = 'modal' | 'inline' | 'banner';
@@ -112,7 +113,6 @@ export function EmailCapture({
           </h2>
           <p className="mt-2 font-body text-sm text-text-secondary">
             Enter your email to see your personalized TDEE and macro breakdown.
-            No spam, ever.
           </p>
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             {inputElement}
@@ -124,6 +124,18 @@ export function EmailCapture({
             >
               {loading ? 'SUBMITTING...' : (buttonLabel ?? defaultLabel)}
             </BrutalistButton>
+            <p className="font-body text-[11px] leading-relaxed text-text-muted">
+              By submitting, you agree to receive email communications from Eccentric Iron
+              Fitness. You can unsubscribe at any time. See our{' '}
+              <Link href="/privacy" className="text-cyan hover:underline" target="_blank">
+                Privacy Policy
+              </Link>{' '}
+              and{' '}
+              <Link href="/terms" className="text-cyan hover:underline" target="_blank">
+                Terms
+              </Link>
+              .
+            </p>
           </form>
           {onClose && (
             <button

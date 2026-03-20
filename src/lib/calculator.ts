@@ -116,7 +116,9 @@ export function calculateTDEE(input: CalculatorInput): number {
 
 /* ── Goal-specific macro splits (percentage of calories) ── */
 
-const MACRO_SPLITS: Record<Goal, { protein: number; carbs: number; fat: number }> = {
+export type MacroSplit = { protein: number; carbs: number; fat: number };
+
+export const MACRO_SPLITS: Record<Goal, MacroSplit> = {
   'Fat Loss': { protein: 0.4, carbs: 0.35, fat: 0.25 },
   'Maintenance': { protein: 0.3, carbs: 0.4, fat: 0.3 },
   'Lean Bulk': { protein: 0.3, carbs: 0.45, fat: 0.25 },
@@ -128,12 +130,12 @@ const MACRO_SPLITS: Record<Goal, { protein: number; carbs: number; fat: number }
  * Maintenance: 30% protein / 40% carbs / 30% fat
  * Lean Bulk:   30% protein / 45% carbs / 25% fat
  */
-export function calculateMacros(input: CalculatorInput): MacroResult {
+export function calculateMacros(input: CalculatorInput, customSplit?: MacroSplit): MacroResult {
   const tdee = calculateTDEE(input);
   const goalMultiplier = GOAL_MULTIPLIERS[input.goal];
   const adjustedCalories = Math.round(tdee * goalMultiplier);
 
-  const split = MACRO_SPLITS[input.goal];
+  const split = customSplit ?? MACRO_SPLITS[input.goal];
 
   // Protein (4 cal/g)
   const protein_g = Math.round((adjustedCalories * split.protein) / 4);

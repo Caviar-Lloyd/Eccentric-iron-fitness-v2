@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Link from 'next/link';
 import { FormField } from '@/components/ui/FormField';
 import { BrutalistButton } from '@/components/ui/BrutalistButton';
 import { SlideOutDrawer } from '@/components/ui/SlideOutDrawer';
@@ -17,6 +18,7 @@ export function BookingDrawer({ coachId, coachName }: BookingDrawerProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [smsOptIn, setSmsOptIn] = useState(false);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,6 +30,7 @@ export function BookingDrawer({ coachId, coachName }: BookingDrawerProps) {
       const form = e.currentTarget;
       const formData = new FormData(form);
       formData.set('coach_id', coachId);
+      if (smsOptIn) formData.set('sms_opt_in', 'true');
 
       try {
         const result = await submitContactForm(formData);
@@ -44,7 +47,7 @@ export function BookingDrawer({ coachId, coachName }: BookingDrawerProps) {
         setLoading(false);
       }
     },
-    [coachId]
+    [coachId, smsOptIn]
   );
 
   const handleOpen = useCallback(() => {
@@ -52,6 +55,7 @@ export function BookingDrawer({ coachId, coachName }: BookingDrawerProps) {
     setSubmitted(false);
     setError('');
     setFieldErrors({});
+    setSmsOptIn(false);
   }, []);
 
   return (
@@ -140,6 +144,35 @@ export function BookingDrawer({ coachId, coachName }: BookingDrawerProps) {
                 </p>
               )}
             </div>
+
+            {/* SMS Opt-in (optional, unchecked by default) */}
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={smsOptIn}
+                onChange={(e) => setSmsOptIn(e.target.checked)}
+                className="mt-1 h-4 w-4 shrink-0 accent-cyan"
+              />
+              <span className="font-body text-xs leading-relaxed text-text-muted">
+                I agree to receive SMS/text messages from Eccentric Iron Fitness including
+                promotions, reminders, and fitness tips. Message frequency varies. Msg &amp; data
+                rates may apply. Reply STOP to opt out. Reply HELP for help. Consent is not a
+                condition of purchase.
+              </span>
+            </label>
+
+            {/* Legal links */}
+            <p className="font-body text-[11px] leading-relaxed text-text-muted">
+              By submitting this form, you agree to our{' '}
+              <Link href="/privacy" className="text-cyan hover:underline" target="_blank">
+                Privacy Policy
+              </Link>{' '}
+              and{' '}
+              <Link href="/terms" className="text-cyan hover:underline" target="_blank">
+                Terms &amp; Conditions
+              </Link>
+              .
+            </p>
 
             {error && (
               <div className="border-3 border-error bg-error/10 p-4">
