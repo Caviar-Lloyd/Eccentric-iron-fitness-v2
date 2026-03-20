@@ -157,7 +157,8 @@ export function BookingDrawer({ coachId, coachName }: BookingDrawerProps) {
                 I agree to receive SMS/text messages from Eccentric Iron Fitness including
                 promotions, reminders, and fitness tips. Message frequency varies. Msg &amp; data
                 rates may apply. Reply STOP to opt out. Reply HELP for help. Consent is not a
-                condition of purchase.
+                condition of purchase. Carriers are not liable for delayed or undelivered
+                messages. You must be 18 years or older to opt in.
               </span>
             </label>
 

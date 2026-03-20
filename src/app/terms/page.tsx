@@ -184,6 +184,12 @@ export default function TermsPage() {
                 services
               </strong>
             </li>
+            <li>
+              Carriers are not liable for delayed or undelivered messages
+            </li>
+            <li>
+              You must be <strong>18 years or older</strong> to opt in to SMS communications
+            </li>
           </ul>
           <p className="mt-3">
             We will not sell, rent, or share your mobile phone number or SMS opt-in consent data
